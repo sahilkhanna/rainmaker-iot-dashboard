@@ -4,6 +4,8 @@ import "./App.css";
 import Login from "../login/login";
 import Dashboard from "../dashboard/dashboard";
 import Welcome from "../welcome/welcome";
+import Nodes from "../nodes/nodes";
+import Header from "../header/header";
 
 function App() {
   const [token, setToken] = useState();
@@ -14,10 +16,10 @@ function App() {
     <div className="App">
       <div className="wrapper">
         <h1>Rainmaker IoT Dashboard</h1>
-        <Welcome auth={token} />
+        {/* <Header auth={token} /> */}
         <Router>
           <Routes>
-            <Route path="/" element={<h1>Welcome</h1>} />
+            <Route path="/" element={<Nodes auth={token} />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </Router>

@@ -28,8 +28,7 @@ class Welcome extends Component {
   render() {
     return (
       <div>
-        <h2>Hi</h2>
-        <span>{this.state.user}</span>
+        <span>Welcome {this.state.user}</span>
       </div>
     );
   }
