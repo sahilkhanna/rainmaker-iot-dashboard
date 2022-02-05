@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import "./App.css";
 import Login from "../login/login";
 import Dashboard from "../dashboard/dashboard";
@@ -15,12 +15,12 @@ function App() {
   return (
     <div className="App">
       <div className="wrapper">
-        <h1>Rainmaker IoT Dashboard</h1>
-        {/* <Header auth={token} /> */}
         <Router>
+          <Header />
           <Routes>
-            <Route path="/" element={<Nodes auth={token} />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/" element={<h1>hi</h1>} />
+            <Route exact path="/nodes" element={<Nodes auth={token} />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
           </Routes>
         </Router>
       </div>
