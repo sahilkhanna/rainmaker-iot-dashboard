@@ -1,108 +1,135 @@
 import React, { Component } from "react";
-import Swagger from "swagger-client";
-
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-const OPENAPI_URL = "/data/Rainmaker_Swagger.yaml";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+import { darken, lighten } from "@mui/material/styles";
+import { DataGrid } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
+import clsx from "clsx";
+const columns = [
+  {
+    field: "id",
+    headerName: "Node ID",
+    width: 290,
+    cellClassName: "id--cell",
   },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+  {
+    field: "status",
+    headerName: "Status",
+    width: 100,
+    cellClassName: (params) =>
+      clsx("status-cell", {
+        online: params.value === "Online",
+        offline: params.value === "Offline",
+      }),
   },
-}));
+  {
+    field: "lastpublished",
+    headerName: "Last Published",
+    width: 550,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    width: 110,
+  },
+  {
+    field: "firmware",
+    headerName: "Firmware",
+    width: 110,
+  },
+];
+
+const getBackgroundColor = (color, mode) =>
+  mode === "dark" ? darken(color, 0.6) : lighten(color, 0.6);
+
+const getHoverBackgroundColor = (color, mode) =>
+  mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
+
 function epochToJsDate(ts) {
   const dateObj = new Date(ts);
   return dateObj.toString();
 }
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
-async function getUserNodes(token) {
-  const apiClient = await Swagger({
-    url: OPENAPI_URL,
-    responseContentType: "application/json",
-    authorizations: { AccessToken: token },
-  });
-  try {
-    // console.log(apiClient);
-    const response = await apiClient.apis["User Node Association"].getUserNodes(
-      { version: "v1", node_details: true }
-    );
-    console.log(response.body);
-    return response.body;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 class Nodes extends Component {
-  state = { nodes: [], total: 0, node_details: [] };
+  state = { rows: [] };
   async componentDidMount() {
-    const UserNodes = await getUserNodes(this.props.auth);
-    this.setState(UserNodes);
+    const n = await this.props.RMaker.nodes;
+    let rows = [];
+    n.node_details.forEach((node) => {
+      let row = {
+        id: node.id,
+        status: node.status.connectivity.connected ? "Online" : "Offline",
+        lastpublished: epochToJsDate(node.status.connectivity.timestamp),
+        type: node.config.info.type,
+        firmware: node.config.info.fw_version,
+      };
+      rows = rows.concat(row);
+    });
+    this.setState({ rows: rows });
   }
   render() {
     return (
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="node table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Node id</StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Last Published</StyledTableCell>
-              <StyledTableCell align="right">Type</StyledTableCell>
-              <StyledTableCell align="right">Firmware</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.node_details.map((node) => (
-              <StyledTableRow
-                key={node.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <StyledTableCell component="th" scope="row">
-                  {node.id}
-                </StyledTableCell>
-                <StyledTableCell
-                  align="right"
-                  sx={{
-                    color: node.status.connectivity.connected
-                      ? "success.main"
-                      : "error.main",
-                  }}
-                >
-                  {node.status.connectivity.connected ? "Online" : "Offline"}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {epochToJsDate(node.status.connectivity.timestamp)}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {node.config.info.type}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {node.config.info.fw_version}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <React.Fragment>
+        <Box
+          sx={{
+            height: 400,
+            width: "100%",
+            color: "#ccc",
+            "& .MuiCheckbox-root svg": {
+              width: 16,
+              height: 16,
+              backgroundColor: "transparent",
+              border: "1px solid #d9d9d9",
+              borderRadius: 2,
+            },
+            "& .id--cell": {
+              fontWeight: "600",
+            },
+            "& .status-cell.online": {
+              color: "#6adc39",
+              fontWeight: "600",
+            },
+            "& .status-cell.offline": {
+              color: "#ff5722",
+              fontWeight: "600",
+            },
+            "& .row--Offline": {
+              bgcolor: () => getBackgroundColor("#444", "dark"),
+              color: "#999",
+              "&:hover": {
+                bgcolor: () => getHoverBackgroundColor("#444", "dark"),
+              },
+            },
+            "& .row--Online": {
+              bgcolor: (theme) => getBackgroundColor("#fff", "dark"),
+              color: "#fff",
+              fontSize: 16,
+              "&:hover": {
+                bgcolor: (theme) => getHoverBackgroundColor("#fff", "dark"),
+              },
+            },
+          }}
+        >
+          <DataGrid
+            rows={this.state.rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+            disableSelectionOnClick
+            getRowClassName={(params) => `row--${params.row.status}`}
+            sx={{
+              boxShadow: 24,
+              color: "#fff",
+              backgroundColor: "#111",
+              "& .MuiDataGrid-row": {
+                color: "#555",
+              },
+              "& .MuiDataGrid-row:hover": {
+                color: "#222",
+              },
+            }}
+          />
+        </Box>
+      </React.Fragment>
     );
   }
 }
