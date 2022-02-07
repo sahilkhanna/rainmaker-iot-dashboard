@@ -1,6 +1,7 @@
 import React, { useState, Component } from "react";
 import Swagger from "swagger-client";
 import PropTypes from "prop-types";
+import { loadingSVG } from "../helper/helper";
 import "./login.css";
 const OPENAPI_URL = "/data/Rainmaker_Swagger.yaml";
 const requestInterceptor = (request) => {
@@ -29,13 +30,16 @@ async function loginUser(credentials) {
 export default function Login({ setToken }) {
   const [user_name, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState();
   const btnClass = "m-4 btn btn-success";
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const token = await loginUser({
       user_name,
       password,
     });
+    setLoading(false);
     setToken(token);
   };
 
@@ -73,7 +77,7 @@ export default function Login({ setToken }) {
         </div>
         <div>
           <button className={btnClass} type="submit">
-            Submit
+            {loading ? loadingSVG : "Sign In"}
           </button>
         </div>
       </form>

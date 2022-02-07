@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { darken, lighten } from "@mui/material/styles";
+// import { darken, lighten } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import clsx from "clsx";
+import { loadingSVG } from "../helper/helper";
 const columns = [
   {
     field: "id",
@@ -37,20 +38,15 @@ const columns = [
   },
 ];
 
-const getBackgroundColor = (color, mode) =>
-  mode === "dark" ? darken(color, 0.6) : lighten(color, 0.6);
-
-const getHoverBackgroundColor = (color, mode) =>
-  mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
-
 function epochToJsDate(ts) {
   const dateObj = new Date(ts);
   return dateObj.toString();
 }
 
 class Nodes extends Component {
-  state = { rows: [] };
+  state = { rows: [], loading: false };
   async componentDidMount() {
+    this.setState({ loading: true });
     const n = await this.props.RMaker.nodes;
     let rows = [];
     n.node_details.forEach((node) => {
@@ -63,7 +59,7 @@ class Nodes extends Component {
       };
       rows = rows.concat(row);
     });
-    this.setState({ rows: rows });
+    this.setState({ rows: rows, loading: false });
   }
   render() {
     return (
@@ -72,7 +68,7 @@ class Nodes extends Component {
           sx={{
             height: 400,
             width: "100%",
-            color: "#ccc",
+            // color: "#ccc",
             "& .MuiCheckbox-root svg": {
               width: 16,
               height: 16,
@@ -92,18 +88,19 @@ class Nodes extends Component {
               fontWeight: "600",
             },
             "& .row--Offline": {
-              bgcolor: () => getBackgroundColor("#444", "dark"),
+              bgcolor: "#444",
               color: "#999",
               "&:hover": {
-                bgcolor: () => getHoverBackgroundColor("#444", "dark"),
+                color: "#ddd",
+                bgcolor: "#222",
               },
             },
             "& .row--Online": {
-              bgcolor: (theme) => getBackgroundColor("#fff", "dark"),
+              bgcolor: "#777",
               color: "#fff",
               fontSize: 16,
               "&:hover": {
-                bgcolor: (theme) => getHoverBackgroundColor("#fff", "dark"),
+                bgcolor: "#555",
               },
             },
           }}
@@ -118,10 +115,10 @@ class Nodes extends Component {
             getRowClassName={(params) => `row--${params.row.status}`}
             sx={{
               boxShadow: 24,
-              color: "#fff",
-              backgroundColor: "#111",
+              // color: "#fff",
+              // backgroundColor: "#111",
               "& .MuiDataGrid-row": {
-                color: "#555",
+                color: "#fff",
               },
               "& .MuiDataGrid-row:hover": {
                 color: "#222",
@@ -129,6 +126,7 @@ class Nodes extends Component {
             }}
           />
         </Box>
+        {this.state.loading ? loadingSVG : ""}
       </React.Fragment>
     );
   }
