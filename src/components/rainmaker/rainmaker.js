@@ -1,28 +1,31 @@
-import Swagger from "swagger-client";
-const OPENAPI_URL = "/data/Rainmaker_Swagger.yaml";
+import client from "rainmaker-client";
 
 class RainMaker {
-  constructor(token) {
-    this.token = token;
+  RMaker;
+  constructor(username, password) {
+    this.username = username;
+    this.password = password;
+    this.RMaker = new client(this.username, this.password);
   }
 
   get nodes() {
     return this.getUserNodes();
   }
+  isSuccess(params) {
+    if (typeof params != "number") {
+      throw new Error("Argument is not a number");
+    }
+    return params.toString()[0] === "2";
+  }
+  async authenticate() {
+    return await this.RMaker.authenticate();
+  }
   async getUserNodes() {
-    const apiClient = await Swagger({
-      url: OPENAPI_URL,
-      responseContentType: "application/json",
-      authorizations: { AccessToken: this.token },
-    });
-    try {
-      const response = await apiClient.apis[
-        "User Node Association"
-      ].getUserNodes({ version: "v1", node_details: true });
-      console.log(response.body);
-      return response.body;
-    } catch (error) {
-      console.log(error);
+    const response = await this.RMaker.getUserNodes(true);
+    if (this.isSuccess(response.status)) {
+      return response.result;
+    } else {
+      return {};
     }
   }
 }

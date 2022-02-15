@@ -11,6 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { BsFillCloudRainFill } from "react-icons/bs";
 const headersData = [
   {
     label: "Dashboard",
@@ -82,7 +83,8 @@ export default function Header() {
       sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
       className={logo}
     >
-      Rainmaker IoT Dashboard
+      <BsFillCloudRainFill />
+      &nbsp;Rainmaker IoT Dashboard
     </Typography>
   );
   const getProfileMenu = () => {

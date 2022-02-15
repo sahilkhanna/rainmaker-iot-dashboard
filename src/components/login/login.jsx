@@ -1,33 +1,19 @@
 import React, { useState, Component } from "react";
-import Swagger from "swagger-client";
+import RainMaker from "../rainmaker/rainmaker";
 import PropTypes from "prop-types";
 import { loadingSVG } from "../helper/helper";
 import "./login.css";
-const OPENAPI_URL = "/data/Rainmaker_Swagger.yaml";
 const requestInterceptor = (request) => {
   console.log(request);
   return request;
 };
 async function loginUser(credentials) {
-  const apiClient = await Swagger({
-    url: OPENAPI_URL,
-    responseContentType: "application/json",
-    authorizations: { AccessToken: "" },
-  });
-  try {
-    const response = await apiClient.apis.User.login(
-      { version: "v1" },
-      {
-        requestBody: credentials,
-      }
-    );
-    return response.body.accesstoken;
-  } catch (error) {
-    console.log(error);
-  }
+  const client = new RainMaker(credentials.user_name, credentials.password);
+  const result = await client.authenticate();
+  return { result: result, client: client };
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setClient }) {
   const [user_name, setUserName] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState();
@@ -35,12 +21,15 @@ export default function Login({ setToken }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const token = await loginUser({
+    const response = await loginUser({
       user_name,
       password,
     });
     setLoading(false);
-    setToken(token);
+    if ((response.result.status = 200)) {
+      setClient(response.client);
+      setToken(true);
+    }
   };
 
   return (
@@ -87,4 +76,5 @@ export default function Login({ setToken }) {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  setClient: PropTypes.func.isRequired,
 };

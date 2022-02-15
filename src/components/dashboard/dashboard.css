@@ -1,0 +1,16 @@
+.dashboard-container {
+  display: flex;
+}
+.dashboard-container > * {
+  flex: 1 100%;
+  padding: 10px;
+}
+.dashboard-sidebar {
+  order: 0;
+  flex: 1 0px;
+}
+
+.dashboard-content {
+  flex: 3 0px;
+  order: 1;
+}
