@@ -1,4 +1,5 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, MenuList, ThemeProvider } from "@material-ui/core";
+import Paper from "@mui/material/Paper";
 import { NavLink } from "react-router-dom";
 import React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -11,6 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { IconContext } from "react-icons";
 import { BsFillCloudRainFill } from "react-icons/bs";
 const headersData = [
   {
@@ -35,7 +37,6 @@ const profileLinks = [
 ];
 const useStyles = makeStyles(() => ({
   header: {
-    backgroundColor: "#111000",
     paddingRight: "19px",
     paddingLeft: "118px",
     "@media (max-width: 900px)": {
@@ -50,22 +51,19 @@ const useStyles = makeStyles(() => ({
   },
   menuButton: {
     fontFamily: "Open Sans, sans-serif",
+    padding: "15px",
+    borderRadius: "5px",
     fontWeight: 700,
     size: "18px",
     marginLeft: "38px",
-    "&:hover": {
-      background: "#eee",
-      color: "#111",
-    },
   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
   },
 }));
-export default function Header() {
-  const { header, logo, menuButton, toolbar } = useStyles();
-
+export default function Header(props) {
+  const { logo, menuButton, toolbar } = useStyles();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -83,7 +81,9 @@ export default function Header() {
       sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
       className={logo}
     >
-      <BsFillCloudRainFill />
+      <IconContext.Provider value={{ size: "1.5em" }}>
+        <BsFillCloudRainFill />
+      </IconContext.Provider>
       &nbsp;Rainmaker IoT Dashboard
     </Typography>
   );
@@ -105,11 +105,11 @@ export default function Header() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" />
+          <Avatar alt="Profile" />
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: "45px" }}
+        sx={{ width: 120, maxWidth: "100%", mt: "45px" }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
@@ -124,7 +124,7 @@ export default function Header() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        {getProfileMenu()}
+        <MenuList>{getProfileMenu()}</MenuList>
       </Menu>
     </Box>
   );
@@ -133,12 +133,18 @@ export default function Header() {
       return (
         <Button
           key={label}
-          color={"inherit"}
+          size="small"
+          // color={"primary"}
           exact={"true"}
           to={href}
           component={NavLink}
           className={menuButton}
-          variant={"outlined"}
+          sx={{
+            ":hover": {
+              color: "white",
+            },
+          }}
+          variant={"text"}
         >
           {label}
         </Button>
@@ -148,7 +154,7 @@ export default function Header() {
 
   const displayDesktop = () => {
     return (
-      <Toolbar disableGutters className={toolbar}>
+      <Toolbar className={toolbar}>
         {headerLogo}
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           {getMenuButtons()}
@@ -157,12 +163,15 @@ export default function Header() {
       </Toolbar>
     );
   };
+  console.log(props.theme.palette);
   return (
     <header>
-      <AppBar position="fixed" className={header}>
-        {displayDesktop()}
-      </AppBar>
-      <Toolbar />
+      <ThemeProvider theme={props.theme}>
+        <AppBar position="fixed" color="primary">
+          {displayDesktop()}
+        </AppBar>
+        <Toolbar />
+      </ThemeProvider>
     </header>
   );
 }

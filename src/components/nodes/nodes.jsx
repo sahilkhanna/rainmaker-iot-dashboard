@@ -66,18 +66,10 @@ class Nodes extends Component {
       <React.Fragment>
         <Box
           sx={{
-            height: 400,
+            height: 700,
             width: "100%",
-            // color: "#ccc",
-            "& .MuiCheckbox-root svg": {
-              width: 16,
-              height: 16,
-              backgroundColor: "transparent",
-              border: "1px solid #d9d9d9",
-              borderRadius: 2,
-            },
             "& .id--cell": {
-              fontWeight: "600",
+              fontWeight: "200",
             },
             "& .status-cell.online": {
               color: "#6adc39",
@@ -85,23 +77,13 @@ class Nodes extends Component {
             },
             "& .status-cell.offline": {
               color: "#ff5722",
-              fontWeight: "600",
             },
             "& .row--Offline": {
-              bgcolor: "#444",
-              color: "#999",
-              "&:hover": {
-                color: "#ddd",
-                bgcolor: "#222",
-              },
+              fontSize: 12,
             },
             "& .row--Online": {
-              bgcolor: "#777",
-              color: "#fff",
-              fontSize: 16,
-              "&:hover": {
-                bgcolor: "#555",
-              },
+              fontWeight: "600",
+              fontSize: 14,
             },
           }}
         >
@@ -114,15 +96,7 @@ class Nodes extends Component {
             disableSelectionOnClick
             getRowClassName={(params) => `row--${params.row.status}`}
             sx={{
-              boxShadow: 24,
-              // color: "#fff",
-              // backgroundColor: "#111",
-              "& .MuiDataGrid-row": {
-                color: "#fff",
-              },
-              "& .MuiDataGrid-row:hover": {
-                color: "#222",
-              },
+              boxShadow: 14,
             }}
           />
         </Box>

@@ -1,10 +1,4 @@
 import React, { Component } from "react";
-import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Backdrop from "@mui/material/Backdrop";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { RiNodeTree } from "react-icons/ri";
@@ -12,43 +6,18 @@ import { IoCloudDoneSharp, IoCloudOfflineSharp } from "react-icons/io5";
 import { loadingSVG } from "../helper/helper";
 import { Link } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "./dashboard.css";
-const ModalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "#111",
-  border: "2px solid #000",
-  borderRadius: "15px!important",
-  boxShadow: 10,
-  p: 4,
-};
-function FloatingActionButtons(handleEvent) {
-  return (
-    <Box sx={{ "& > :not(style)": { m: 1 } }}>
-      <Fab
-        onClick={handleEvent}
-        variant="extended"
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "fixed",
-          bottom: (theme) => theme.spacing(2),
-          right: (theme) => theme.spacing(2),
-        }}
-      >
-        <AddIcon /> Node
-      </Fab>
-    </Box>
-  );
-}
-
 class Dashboard extends Component {
   state = {
     nodesInfo: { nodes: [], node_details: [{ id: "" }], total: 0 },
@@ -63,51 +32,86 @@ class Dashboard extends Component {
     this.setState({ open: true });
   };
   handleClose = () => this.setState({ open: false });
+
   card(nodeDetails) {
-    const heights = [
-      150, 30, 90, 70, 110, 150, 130, 80, 50, 90, 100, 150, 30, 50, 80,
-    ];
+    console.log(nodeDetails);
     const Item = styled(Paper)(({ theme }) => ({
-      backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
       ...theme.typography.body2,
       padding: theme.spacing(0.5),
       textAlign: "center",
+    }));
+    const StyledAccordion = styled(Accordion)(({ theme }) => ({
       color: theme.palette.text.secondary,
     }));
-    const theme = createTheme();
     return (
       <React.Fragment>
-        <Box sx={{ width: 500, minHeight: 393, bgcolor: "background.default" }}>
+        <Box sx={{ minwidth: 500, minHeight: 500 }}>
           <Masonry columns={4} spacing={2}>
-            {heights.map((height, index) => (
-              <ThemeProvider theme={theme}>
-                <Item key={index} sx={{ height }}>
-                  {index + 1}
-                </Item>
-              </ThemeProvider>
-            ))}
+            <Paper key={nodeDetails.id + "Detail"}>
+              <StyledAccordion expanded={true}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="h6">Details</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>ID: {nodeDetails.id}</Typography>
+                  {Object.keys(nodeDetails.config.info).map((key) => {
+                    return (
+                      <Typography key={nodeDetails.id + key}>
+                        {key} : {nodeDetails.config.info[key]}
+                      </Typography>
+                    );
+                  })}
+                </AccordionDetails>
+              </StyledAccordion>
+            </Paper>
+            <Paper key={nodeDetails.id + "Attributes"}>
+              <StyledAccordion
+                expanded={true}
+                TransitionProps={{ unmountOnExit: true }}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="h6">Atrributes</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {nodeDetails.config.attributes.map((attr) => {
+                    return Object.keys(attr).map((key) => {
+                      return (
+                        <Typography key={nodeDetails.id + attr[key]}>
+                          {attr[key]}
+                        </Typography>
+                      );
+                    });
+                  })}
+                </AccordionDetails>
+              </StyledAccordion>
+            </Paper>
+
+            {Object.keys(nodeDetails.params).map((paramName) => {
+              return (
+                <Paper key={nodeDetails.id + nodeDetails.params[paramName]}>
+                  <StyledAccordion expanded={true}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography variant="h6">{paramName}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {Object.keys(nodeDetails.params[paramName]).map(
+                        (paramValue) => {
+                          return (
+                            <Typography>
+                              {paramValue} :{" "}
+                              {nodeDetails.params[paramName][paramValue]}
+                            </Typography>
+                          );
+                        }
+                      )}
+                    </AccordionDetails>
+                  </StyledAccordion>
+                </Paper>
+              );
+            })}
           </Masonry>
         </Box>
       </React.Fragment>
-    );
-  }
-  nodeList() {
-    return (
-      <Modal
-        aria-labelledby="spring-modal-title"
-        aria-describedby="spring-modal-description"
-        open={this.state.open}
-        onClose={this.handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={this.state.open}>
-          <Box sx={ModalStyle}></Box>
-        </Fade>
-      </Modal>
     );
   }
 

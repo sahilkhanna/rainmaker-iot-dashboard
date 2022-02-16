@@ -6,45 +6,84 @@ import Dashboard from "../dashboard/dashboard";
 import Nodes from "../nodes/nodes";
 import Header from "../header/header";
 
-import { ThemeProvider, createTheme } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Paper from "@mui/material/Paper";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { Switch } from "@material-ui/core";
+import Paper from "@mui/material/Paper";
+import { StyledEngineProvider } from "@mui/material/styles";
+import GlobalStyles from "@mui/material/GlobalStyles";
 function App() {
   const [token, setToken] = useState();
   const [client, setClient] = useState();
-  const [darkMode, setDarkMode] = useState(false);
-  const theme = createTheme({
+  const [light, setLight] = React.useState(false);
+  const themeLight = createTheme({
     palette: {
-      type: darkMode ? "dark" : "light",
+      mode: "light",
+      background: {
+        default: "#e4f0e2",
+      },
+    },
+  });
+
+  const themeDark = createTheme({
+    palette: {
+      mode: "dark",
+      background: {
+        default: "#222222",
+      },
     },
   });
   if (!token) {
-    return <Login setToken={setToken} setClient={setClient} />;
+    return (
+      <ThemeProvider theme={light ? themeLight : themeDark}>
+        <CssBaseline />
+        <Login setToken={setToken} setClient={setClient} />
+        <Switch checked={light} onChange={() => setLight(!light)} />
+      </ThemeProvider>
+    );
   }
   return (
-    // <ThemeProvider theme={theme}>
-    //   <CssBaseline />
-    //   <Paper style={{ height: "100vh" }}>
-    <div className="App">
-      <div className="wrapper">
-        <Router>
-          <Header />
-          <Routes>
-            <Route exact path="/" element={<h1>hi</h1>} />
-            <Route exact path="/nodes" element={<Nodes RMaker={client} />} />
-            <Route
-              exact
-              path="/dashboard/*"
-              element={<Dashboard RMaker={client} />}
-            />
-          </Routes>
-        </Router>
-      </div>
-    </div>
-    //     <Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
-    //   </Paper>
-    // </ThemeProvider>
+    <ThemeProvider theme={light ? themeLight : themeDark}>
+      <GlobalStyles
+        styles={{
+          body: { backgroundColor: "#aaa" },
+        }}
+      />
+      <Paper>
+        <CssBaseline />
+        <div className="App">
+          <div className="wrapper">
+            <Router>
+              <Header theme={light ? themeLight : themeDark} />
+              <Routes>
+                <Route exact path="/" element={<h1>hi</h1>} />
+                <Route
+                  exact
+                  path="/nodes"
+                  element={
+                    <Nodes
+                      RMaker={client}
+                      theme={light ? themeLight : themeDark}
+                    />
+                  }
+                />
+                <Route
+                  exact
+                  path="/dashboard/*"
+                  element={
+                    <Dashboard
+                      RMaker={client}
+                      theme={light ? themeLight : themeDark}
+                    />
+                  }
+                />
+              </Routes>
+            </Router>
+          </div>
+        </div>
+        <Switch checked={light} onChange={() => setLight(!light)} />
+      </Paper>
+    </ThemeProvider>
   );
 }
 
