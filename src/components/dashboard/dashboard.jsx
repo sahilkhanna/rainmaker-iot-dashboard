@@ -7,6 +7,7 @@ import { loadingSVG } from "../helper/helper";
 import { Routes, Route, Link } from "react-router-dom";
 import "./dashboard.css";
 import NodeExplorer from "./nodeExplore";
+import { Container, Typography } from "@mui/material";
 class Dashboard extends Component {
   state = {
     nodesInfo: { nodes: [], node_details: [{ id: "" }], total: 0 },
@@ -18,8 +19,10 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <h2>Dashboard</h2>
+      <Container component="main" maxWidth="false">
+        <Typography variant="h2" align="center" sx={{ mx: "auto" }}>
+          Dashboard
+        </Typography>
         <div className="dashboard-container">
           <div className="dashboard-sidebar">
             <ProSidebar>
@@ -70,7 +73,7 @@ class Dashboard extends Component {
             )}
           </div>
         </div>
-      </React.Fragment>
+      </Container>
     );
   }
 }
