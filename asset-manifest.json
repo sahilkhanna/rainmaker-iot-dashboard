@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/rainmaker-iot-dashboard/static/css/main.2aececcc.css",
+    "main.js": "/rainmaker-iot-dashboard/static/js/main.121213d3.js",
+    "static/js/787.2ac597e1.chunk.js": "/rainmaker-iot-dashboard/static/js/787.2ac597e1.chunk.js",
+    "index.html": "/rainmaker-iot-dashboard/index.html",
+    "main.2aececcc.css.map": "/rainmaker-iot-dashboard/static/css/main.2aececcc.css.map",
+    "main.121213d3.js.map": "/rainmaker-iot-dashboard/static/js/main.121213d3.js.map",
+    "787.2ac597e1.chunk.js.map": "/rainmaker-iot-dashboard/static/js/787.2ac597e1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2aececcc.css",
+    "static/js/main.121213d3.js"
+  ]
+}
