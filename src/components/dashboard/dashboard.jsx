@@ -10,17 +10,11 @@ import NodeExplorer from "./nodeExplore";
 class Dashboard extends Component {
   state = {
     nodesInfo: { nodes: [], node_details: [{ id: "" }], total: 0 },
-    open: false,
   };
   async componentDidMount() {
     const n = await this.props.RMaker.nodes;
     this.setState({ nodesInfo: n });
   }
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-  handleClose = () => this.setState({ open: false });
 
   render() {
     return (

@@ -1,12 +1,18 @@
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import RainMaker from "../rainmaker/rainmaker";
 import PropTypes from "prop-types";
 import { loadingSVG } from "../helper/helper";
-import "./login.css";
-const requestInterceptor = (request) => {
-  console.log(request);
-  return request;
-};
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { BsFillCloudRainFill } from "react-icons/bs";
+import { IconContext } from "react-icons";
+import Switch from "@mui/material/Switch";
 async function loginUser(credentials) {
   const client = new RainMaker(credentials.user_name, credentials.password);
   const result = await client.authenticate();
@@ -14,15 +20,41 @@ async function loginUser(credentials) {
 }
 
 export default function Login({ setToken, setClient }) {
-  const [user_name, setUserName] = useState();
-  const [password, setPassword] = useState();
   const [loading, setLoading] = useState();
-  const btnClass = "m-4 btn btn-success";
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [light, setLight] = React.useState(false);
+  const themeLight = createTheme({
+    palette: {
+      mode: "light",
+      primary: {
+        main: "#b53f87",
+      },
+      secondary: {
+        main: "#f50057",
+      },
+      spacing: 8,
+    },
+  });
+
+  const themeDark = createTheme({
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#b53f87",
+      },
+      secondary: {
+        main: "#f50057",
+      },
+      spacing: 8,
+    },
+  });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setLoading(true);
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const password = data.get("password");
     const response = await loginUser({
-      user_name,
+      user_name: email,
       password,
     });
     setLoading(false);
@@ -33,44 +65,67 @@ export default function Login({ setToken, setClient }) {
   };
 
   return (
-    <div className="login-wrapper">
-      <h1>Please Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="m-4 input-group input-group-lg">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-lg">
-              Username
-            </span>
-          </div>
-          <input
-            type="text"
-            className="form-control"
-            aria-label="Large"
-            aria-describedby="inputGroup-sizing-sm"
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
-        <div className="m-4 input-group input-group-lg">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-lg">
-              Password
-            </span>
-          </div>
-          <input
-            type="password"
-            className="form-control"
-            aria-label="Large"
-            aria-describedby="inputGroup-sizing-sm"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <button className={btnClass} type="submit">
-            {loading ? loadingSVG : "Sign In"}
-          </button>
-        </div>
-      </form>
-    </div>
+    <ThemeProvider theme={light ? themeLight : themeDark}>
+      <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        {/* <Paper elevated={0} sx={{ p: 2, mx: "auto" }}> */}
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <IconContext.Provider value={{ size: "1.5em" }}>
+              <BsFillCloudRainFill />
+            </IconContext.Provider>
+          </Avatar>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+          >
+            Rainmaker IoT Dashboard
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button type="submit" fullWidth variant="contained">
+              {loading ? loadingSVG : "Sign In"}
+            </Button>
+          </Box>
+        </Box>
+
+        <Switch checked={light} onChange={() => setLight(!light)} />
+        {/* </Paper> */}
+      </Container>
+    </ThemeProvider>
   );
 }
 

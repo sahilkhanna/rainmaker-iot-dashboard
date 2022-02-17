@@ -142,7 +142,7 @@ export default function Header(props) {
               color: "white",
             },
           }}
-          variant={"text"}
+          variant={"Text"}
         >
           {label}
         </Button>
@@ -161,7 +161,6 @@ export default function Header(props) {
       </Toolbar>
     );
   };
-  console.log(props.theme.palette);
   return (
     <header>
       <ThemeProvider theme={props.theme}>

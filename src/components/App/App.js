@@ -8,9 +8,8 @@ import Header from "../header/header";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Switch } from "@material-ui/core";
-import Paper from "@mui/material/Paper";
-import GlobalStyles from "@mui/material/GlobalStyles";
+import Switch from "@mui/material/Switch";
+import Container from "@mui/material/Container";
 function App() {
   const [token, setToken] = useState();
   const [client, setClient] = useState();
@@ -18,70 +17,61 @@ function App() {
   const themeLight = createTheme({
     palette: {
       mode: "light",
-      background: {
-        default: "#e4f0e2",
+      primary: {
+        main: "#b53f87",
+      },
+      secondary: {
+        main: "#f50057",
       },
     },
+    spacing: 8,
   });
 
   const themeDark = createTheme({
     palette: {
       mode: "dark",
-      background: {
-        default: "#222222",
+      primary: {
+        main: "#b53f87",
+      },
+      secondary: {
+        main: "#f50057",
       },
     },
+    spacing: 8,
   });
   if (!token) {
-    return (
-      <ThemeProvider theme={light ? themeLight : themeDark}>
-        <CssBaseline />
-        <Login setToken={setToken} setClient={setClient} />
-        <Switch checked={light} onChange={() => setLight(!light)} />
-      </ThemeProvider>
-    );
+    return <Login setToken={setToken} setClient={setClient} />;
   }
   return (
     <ThemeProvider theme={light ? themeLight : themeDark}>
-      <GlobalStyles
-        styles={{
-          body: { backgroundColor: "#aaa" },
-        }}
-      />
-      <Paper>
-        <CssBaseline />
-        <div className="App">
-          <div className="wrapper">
-            <Router>
-              <Header theme={light ? themeLight : themeDark} />
-              <Routes>
-                <Route exact path="/" element={<h1>hi</h1>} />
-                <Route
-                  exact
-                  path="/nodes"
-                  element={
-                    <Nodes
-                      RMaker={client}
-                      theme={light ? themeLight : themeDark}
-                    />
-                  }
+      <CssBaseline />
+
+      <Container component="main" maxWidth="false" sx={{ p: 2 }}>
+        <Router>
+          <Header theme={light ? themeLight : themeDark} />
+          <Routes>
+            <Route exact path="/" element={<h1>hi</h1>} />
+            <Route
+              exact
+              path="/nodes"
+              element={
+                <Nodes RMaker={client} theme={light ? themeLight : themeDark} />
+              }
+            />
+            <Route
+              exact
+              path="/dashboard/*"
+              element={
+                <Dashboard
+                  RMaker={client}
+                  theme={light ? themeLight : themeDark}
                 />
-                <Route
-                  exact
-                  path="/dashboard/*"
-                  element={
-                    <Dashboard
-                      RMaker={client}
-                      theme={light ? themeLight : themeDark}
-                    />
-                  }
-                />
-              </Routes>
-            </Router>
-          </div>
-        </div>
-        <Switch checked={light} onChange={() => setLight(!light)} />
-      </Paper>
+              }
+            />
+          </Routes>
+        </Router>
+      </Container>
+      <Switch checked={light} onChange={() => setLight(!light)} />
     </ThemeProvider>
   );
 }

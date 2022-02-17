@@ -3,7 +3,7 @@ const loadingSVG = (
     style={{
       margin: "auto",
       display: "block",
-      "shape-rendering": "auto",
+      shapeRendering: "auto",
     }}
     width="31px"
     height="31px"
