@@ -10,7 +10,6 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Switch } from "@material-ui/core";
 import Paper from "@mui/material/Paper";
-import { StyledEngineProvider } from "@mui/material/styles";
 import GlobalStyles from "@mui/material/GlobalStyles";
 function App() {
   const [token, setToken] = useState();

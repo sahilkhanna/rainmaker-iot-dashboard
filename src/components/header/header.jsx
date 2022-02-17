@@ -1,5 +1,4 @@
-import { makeStyles, MenuList, ThemeProvider } from "@material-ui/core";
-import Paper from "@mui/material/Paper";
+import { makeStyles, ThemeProvider } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -91,7 +90,7 @@ export default function Header(props) {
     return profileLinks.map(({ label, href }) => {
       return (
         <MenuItem
-          key={"menu" + label}
+          key={"profilemenu" + label}
           onClick={handleCloseUserMenu}
           component={NavLink}
           to={href}
@@ -109,8 +108,8 @@ export default function Header(props) {
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ width: 120, maxWidth: "100%", mt: "45px" }}
-        id="menu-appbar"
+        sx={{ mt: "45px" }}
+        id="menu-profilebar"
         anchorEl={anchorElUser}
         anchorOrigin={{
           vertical: "top",
@@ -124,7 +123,7 @@ export default function Header(props) {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <MenuList>{getProfileMenu()}</MenuList>
+        {getProfileMenu()}
       </Menu>
     </Box>
   );
@@ -134,7 +133,6 @@ export default function Header(props) {
         <Button
           key={label}
           size="small"
-          // color={"primary"}
           exact={"true"}
           to={href}
           component={NavLink}
@@ -152,7 +150,7 @@ export default function Header(props) {
     });
   };
 
-  const displayDesktop = () => {
+  const displayHeader = () => {
     return (
       <Toolbar className={toolbar}>
         {headerLogo}
@@ -168,7 +166,7 @@ export default function Header(props) {
     <header>
       <ThemeProvider theme={props.theme}>
         <AppBar position="fixed" color="primary">
-          {displayDesktop()}
+          {displayHeader()}
         </AppBar>
         <Toolbar />
       </ThemeProvider>
