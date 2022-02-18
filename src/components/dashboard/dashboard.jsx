@@ -8,21 +8,40 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./dashboard.css";
 import NodeExplorer from "./nodeExplore";
 import { Container, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 class Dashboard extends Component {
   state = {
     nodesInfo: { nodes: [], node_details: [{ id: "" }], total: 0 },
+    fetching: false,
   };
-  async componentDidMount() {
+  timer = null;
+  async fetchNodeInfo() {
+    this.setState({ fetching: true });
     const n = await this.props.RMaker.nodes;
-    this.setState({ nodesInfo: n });
+    this.setState({ nodesInfo: n, fetching: false });
+  }
+  async componentDidMount() {
+    this.fetchNodeInfo();
+    // this.timer = setInterval(() => this.fetchNodeInfo(), 10000);
+  }
+  async componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   render() {
     return (
       <Container component="main" maxWidth="false">
-        <Typography variant="h2" align="center" sx={{ mx: "auto" }}>
-          Dashboard
-        </Typography>
+        <Box sx={{ display: "flex" }}>
+          <Typography variant="h2" align="center" sx={{ mx: "auto" }}>
+            Dashboard
+          </Typography>
+          {this.state.fetching ? (
+            <CircularProgress sx={{ position: "fixed" }} />
+          ) : (
+            ""
+          )}
+        </Box>
         <div className="dashboard-container">
           <div className="dashboard-sidebar">
             <ProSidebar>

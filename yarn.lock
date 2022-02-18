@@ -4658,7 +4658,6 @@
   dependencies:
     "locate-path" "^2.0.0"
 
-<<<<<<< HEAD
 "find-up@^3.0.0":
   "integrity" "sha512-1yD6RmLI1XBfxugvORwlck6f75tYL+iR0jqwsOrOxMZyGYqUuDhJ0l4AXdO1iX/FTs9cBAMEk1gWSEx1kSbylg=="
   "resolved" "https://registry.npmjs.org/find-up/-/find-up-3.0.0.tgz"
@@ -4704,38 +4703,14 @@
   "version" "3.2.5"
 
 "follow-redirects@^1.0.0":
-  "integrity" "sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ=="
-  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.7.tgz"
-  "version" "1.14.7"
+  "integrity" "sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.8.tgz"
+  "version" "1.14.8"
 
 "fork-ts-checker-webpack-plugin@^6.5.0":
   "integrity" "sha512-cS178Y+xxtIjEUorcHddKS7yCMlrDPV31mt47blKKRfMd70Kxu5xruAFE2o9sDY6wVC5deuob/u/alD04YYHnw=="
   "resolved" "https://registry.npmjs.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.0.tgz"
   "version" "6.5.0"
-=======
-flat-cache@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.npmjs.org/flat-cache/-/flat-cache-3.0.4.tgz"
-  integrity sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==
-  dependencies:
-    flatted "^3.1.0"
-    rimraf "^3.0.2"
-
-flatted@^3.1.0:
-  version "3.2.5"
-  resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.5.tgz"
-  integrity sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==
-
-follow-redirects@^1.0.0:
-  version "1.14.8"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
-  integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
-
-fork-ts-checker-webpack-plugin@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.npmjs.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.0.tgz"
-  integrity sha512-cS178Y+xxtIjEUorcHddKS7yCMlrDPV31mt47blKKRfMd70Kxu5xruAFE2o9sDY6wVC5deuob/u/alD04YYHnw==
->>>>>>> 8471f47c5b8763e5f819b4834c612ccbe5bb01b8
   dependencies:
     "@babel/code-frame" "^7.8.3"
     "@types/json-schema" "^7.0.5"
@@ -7675,11 +7650,11 @@ fork-ts-checker-webpack-plugin@^6.5.0:
   dependencies:
     "performance-now" "^2.1.0"
 
-"rainmaker-client@^0.0.2":
-  "integrity" "sha512-Hxdyey5IHq+ZJ8/vvemYLxwoGu3zMVNWteCPpTxO+exX/dTiY54RnmULqLiGl8P8//siF3t6Nt9k85KWg05LiA=="
-  "resolved" "https://registry.npmjs.org/rainmaker-client/-/rainmaker-client-0.0.2.tgz"
-  "version" "0.0.2"
+"rainmaker-client@file:../rainmaker-client":
+  "resolved" "file:../rainmaker-client"
+  "version" "0.0.3"
   dependencies:
+    "@apidevtools/swagger-parser" "^10.0.3"
     "swagger-client" "^3.18.4"
 
 "randombytes@^2.1.0":
@@ -8768,7 +8743,7 @@ fork-ts-checker-webpack-plugin@^6.5.0:
     "picocolors" "^1.0.0"
     "stable" "^0.1.8"
 
-"swagger-client@^3.18.3", "swagger-client@^3.18.4":
+"swagger-client@^3.18.3":
   "integrity" "sha512-Wj26oEctONq/u0uM+eSj18675YM5e2vFnx7Kr4neLeXEHKUsfceVQ/OdtrBXdrT3VbtdBbZfMTfl1JOBpix2MA=="
   "resolved" "https://registry.npmjs.org/swagger-client/-/swagger-client-3.18.4.tgz"
   "version" "3.18.4"
