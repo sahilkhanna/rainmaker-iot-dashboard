@@ -4,11 +4,36 @@ import Masonry from "@mui/lab/Masonry";
 import Box from "@mui/material/Box";
 import { Container, Typography } from "@mui/material";
 import { styled } from "@mui/system";
+import ParamUIType from "./paramUIType";
+
 const CardHeaderTypography = styled(Typography)(({ theme }) => ({
   "&": {
     color: theme.palette.primary.main,
   },
 }));
+
+function DisplayParams(device, nodeDetails) {
+  return device.params.map((param) => {
+    return (
+      <React.Fragment>
+        <Typography
+          display={"inline"}
+          key={nodeDetails.id + "paramName" + device.name + param.name}
+          sx={{ color: "text.secondary" }}
+        >
+          {param.name}:{" "}
+        </Typography>
+        {ParamUIType(
+          param,
+          nodeDetails.params[device.name][param.name],
+          device.name,
+          nodeDetails.id
+        )}
+        {"\n"}
+      </React.Fragment>
+    );
+  });
+}
 function NodeExplorer(nodeDetails) {
   console.log(nodeDetails);
   return (
@@ -53,58 +78,13 @@ function NodeExplorer(nodeDetails) {
               elevation={3}
               key={nodeDetails.id + "paper" + device.name}
             >
-              <CardHeaderTypography variant="h6">
+              <CardHeaderTypography
+                key={nodeDetails.id + "deviceName" + device.name}
+                variant="h6"
+              >
                 {device.name}
               </CardHeaderTypography>
-              {device.params.map((param, idx) => {
-                return (
-                  <React.Fragment>
-                    <Container>
-                      <Typography
-                        display={"inline"}
-                        key={
-                          nodeDetails.id +
-                          "paramName" +
-                          device.name +
-                          param.name
-                        }
-                        sx={{ color: "text.secondary" }}
-                      >
-                        {param.name}:{" "}
-                      </Typography>
-                      <Typography
-                        display={"inline"}
-                        key={
-                          nodeDetails.id +
-                          "paramName" +
-                          device.name +
-                          param.name +
-                          "val"
-                        }
-                      >
-                        {nodeDetails.params[device.name][param.name]}
-                        {"\n"}
-                      </Typography>
-                      {"\n"}
-                      {param.properties.indexOf("write") >= 0 ? (
-                        <Typography
-                          key={
-                            nodeDetails.id +
-                            "paramName" +
-                            device.name +
-                            param.name +
-                            idx
-                          }
-                        >
-                          writeable
-                        </Typography>
-                      ) : (
-                        ""
-                      )}
-                    </Container>
-                  </React.Fragment>
-                );
-              })}
+              {DisplayParams(device, nodeDetails)}
             </Paper>
           );
         })}
