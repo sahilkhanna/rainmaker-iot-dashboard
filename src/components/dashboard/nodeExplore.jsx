@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Paper from "@mui/material/Paper";
 import Masonry from "@mui/lab/Masonry";
 import Box from "@mui/material/Box";
@@ -15,7 +15,7 @@ const CardHeaderTypography = styled(Typography)(({ theme }) => ({
 function DisplayParams(device, nodeDetails) {
   return device.params.map((param) => {
     return (
-      <React.Fragment>
+      <Container key={nodeDetails.id + "container" + device.name + param.name}>
         <Typography
           display={"inline"}
           key={nodeDetails.id + "paramName" + device.name + param.name}
@@ -30,12 +30,11 @@ function DisplayParams(device, nodeDetails) {
           nodeDetails.id
         )}
         {"\n"}
-      </React.Fragment>
+      </Container>
     );
   });
 }
-function NodeExplorer(nodeDetails) {
-  console.log(nodeDetails);
+function nodeInfoPopulate(nodeDetails) {
   return (
     <Box sx={{ minwidth: 500, minHeight: 500 }}>
       <Masonry columns={4} spacing={2}>
@@ -91,6 +90,21 @@ function NodeExplorer(nodeDetails) {
       </Masonry>
     </Box>
   );
+}
+
+class NodeExplorer extends Component {
+  state = { nodeDetails: {}, ready: false };
+  componentDidMount() {
+    this.setState({ nodeDetails: this.props.nodeDetails, ready: true });
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.nodeDetails != prevProps.nodeDetails) {
+      this.setState({ nodeDetails: this.props.nodeDetails, ready: true });
+    }
+  }
+  render() {
+    return this.state.ready ? nodeInfoPopulate(this.state.nodeDetails) : "";
+  }
 }
 
 export default NodeExplorer;

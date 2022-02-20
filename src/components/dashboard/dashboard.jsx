@@ -26,7 +26,7 @@ class Dashboard extends Component {
     // this.timer = setInterval(() => this.fetchNodeInfo(), 10000);
   }
   async componentWillUnmount() {
-    clearInterval(this.timer);
+    // clearInterval(this.timer);
   }
 
   render() {
@@ -77,12 +77,13 @@ class Dashboard extends Component {
             {this.state.nodesInfo.total > 0 ? (
               <Routes>
                 {this.state.nodesInfo.node_details.map((node) => {
+                  console.log(node);
                   return (
                     <Route
                       path={node.id}
                       exact
                       key={"route" + node.id}
-                      element={NodeExplorer(node)}
+                      element={<NodeExplorer nodeDetails={node} />}
                     />
                   );
                 })}
