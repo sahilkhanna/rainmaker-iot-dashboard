@@ -5,7 +5,11 @@ class RainMaker {
   constructor(username, password) {
     this.username = username;
     this.password = password;
-    this.RMaker = new client(this.username, this.password);
+    this.RMaker = new client(
+      this.username,
+      this.password,
+      "https://raw.githubusercontent.com/sahilkhanna/rainmaker-iot-dashboard/master/public/data/Rainmaker_Swagger.yaml"
+    );
   }
 
   get nodes() {
