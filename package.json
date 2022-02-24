@@ -1,6 +1,10 @@
 {
   "name": "rainmaker-iot-dashboard",
+<<<<<<< HEAD
   "version": "0.2.3",
+=======
+  "version": "0.2.1",
+>>>>>>> 514e5809956f014d077582e93c6d90c7584e194c
   "private": true,
   "homepage": "http://sahilkhanna.github.io/rainmaker-iot-dashboard",
   "dependencies": {
