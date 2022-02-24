@@ -19,7 +19,7 @@ async function loginUser(credentials) {
   return { result: result, client: client };
 }
 
-export default function Login({ setToken, setClient }) {
+export default function Login({ setClient }) {
   const [loading, setLoading] = useState();
   const [light, setLight] = React.useState(false);
   const themeLight = createTheme({
@@ -60,7 +60,6 @@ export default function Login({ setToken, setClient }) {
     setLoading(false);
     if ((response.result.status = 200)) {
       setClient(response.client);
-      setToken(true);
     }
   };
 
@@ -130,6 +129,5 @@ export default function Login({ setToken, setClient }) {
 }
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
   setClient: PropTypes.func.isRequired,
 };

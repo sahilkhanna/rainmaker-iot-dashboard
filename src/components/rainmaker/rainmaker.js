@@ -6,6 +6,7 @@ class RainMaker {
     this.username = username;
     this.password = password;
     this.RMaker = new client(this.username, this.password);
+    this.connected = false;
   }
 
   get nodes() {
@@ -18,7 +19,13 @@ class RainMaker {
     return params.toString()[0] === "2";
   }
   async authenticate() {
-    return await this.RMaker.authenticate();
+    const res = await this.RMaker.authenticate();
+    if (res.status === 200) {
+      this.connected = true;
+    } else {
+      this.connected = false;
+    }
+    return res;
   }
   async getUserNodes() {
     const response = await this.RMaker.getUserNodes(true);

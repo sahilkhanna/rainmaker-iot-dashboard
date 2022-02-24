@@ -98,7 +98,7 @@ class NodeExplorer extends Component {
     this.setState({ nodeDetails: this.props.nodeDetails, ready: true });
   }
   componentDidUpdate(prevProps) {
-    if (this.props.nodeDetails != prevProps.nodeDetails) {
+    if (this.props.nodeDetails !== prevProps.nodeDetails) {
       this.setState({ nodeDetails: this.props.nodeDetails, ready: true });
     }
   }

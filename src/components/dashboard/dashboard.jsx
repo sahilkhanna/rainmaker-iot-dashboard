@@ -81,7 +81,6 @@ class Dashboard extends Component {
                   return (
                     <Route
                       path={node.id}
-                      exact
                       key={"route" + node.id}
                       element={<NodeExplorer nodeDetails={node} />}
                     />

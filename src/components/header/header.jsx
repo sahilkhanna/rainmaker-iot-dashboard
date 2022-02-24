@@ -16,7 +16,7 @@ import { BsFillCloudRainFill } from "react-icons/bs";
 const headersData = [
   {
     label: "Dashboard",
-    href: "/dashboard",
+    href: "/",
   },
   {
     label: "Nodes",
