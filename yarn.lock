@@ -7650,10 +7650,9 @@
   dependencies:
     "performance-now" "^2.1.0"
 
-"rainmaker-client@^0.0.5":
-  "integrity" "sha512-nO8iWDde6/Q+f2jfP035DwnYiAZzafl5GSEfOfoXEgHXnjmBR30foU7aFPJqqE662l1vlMtxepyT4HJuLwFXgg=="
-  "resolved" "https://registry.npmjs.org/rainmaker-client/-/rainmaker-client-0.0.5.tgz"
-  "version" "0.0.5"
+"rainmaker-client@file:../../NodeJS/rainmaker-client/rainmaker-client":
+  "resolved" "file:../../NodeJS/rainmaker-client/rainmaker-client"
+  "version" "0.0.8"
   dependencies:
     "swagger-client" "^3.18.4"
 
@@ -8743,7 +8742,7 @@
     "picocolors" "^1.0.0"
     "stable" "^0.1.8"
 
-"swagger-client@^3.18.3", "swagger-client@^3.18.4":
+"swagger-client@^3.18.3":
   "integrity" "sha512-Wj26oEctONq/u0uM+eSj18675YM5e2vFnx7Kr4neLeXEHKUsfceVQ/OdtrBXdrT3VbtdBbZfMTfl1JOBpix2MA=="
   "resolved" "https://registry.npmjs.org/swagger-client/-/swagger-client-3.18.4.tgz"
   "version" "3.18.4"

@@ -18,6 +18,14 @@ async function loginUser(credentials) {
   const result = await client.authenticate();
   return { result: result, client: client };
 }
+// Longer duration refresh token (30-60 min)
+export function getRefreshToken() {
+  return sessionStorage.getItem("refreshToken");
+}
+
+export function setRefreshToken(token) {
+  sessionStorage.setItem("refreshToken", token);
+}
 
 export default function Login({ setClient }) {
   const [loading, setLoading] = useState();
@@ -59,6 +67,7 @@ export default function Login({ setClient }) {
     });
     setLoading(false);
     if ((response.result.status = 200)) {
+      setRefreshToken(response.client.refreshToken);
       setClient(response.client);
     }
   };

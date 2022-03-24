@@ -3,10 +3,12 @@ import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
 import { RiNodeTree } from "react-icons/ri";
 import { IoCloudDoneSharp, IoCloudOfflineSharp } from "react-icons/io5";
+import { MdGroups } from "react-icons/md";
 import { loadingSVG } from "../helper/helper";
 import { Routes, Route, Link } from "react-router-dom";
 import "./dashboard.css";
 import NodeExplorer from "./nodeExplore";
+import GroupExplorer from "./groupExplorer";
 import { Container, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -14,6 +16,7 @@ class Dashboard extends Component {
   state = {
     nodesInfo: { nodes: [], node_details: [{ id: "" }], total: 0 },
     fetching: false,
+    userGroups: {},
   };
   timer = null;
   async fetchNodeInfo() {
@@ -21,8 +24,15 @@ class Dashboard extends Component {
     const n = await this.props.RMaker.nodes;
     this.setState({ nodesInfo: n, fetching: false });
   }
+  async fetchUserGroups() {
+    this.setState({ fetching: true });
+    const ug = await this.props.RMaker.userGroups;
+    console.dir(ug);
+    this.setState({ userGroups: ug, fetching: false });
+  }
   async componentDidMount() {
     this.fetchNodeInfo();
+    this.fetchUserGroups();
     // this.timer = setInterval(() => this.fetchNodeInfo(), 10000);
   }
   async componentWillUnmount() {
@@ -70,6 +80,28 @@ class Dashboard extends Component {
                       })
                     : loadingSVG}
                 </SubMenu>
+                <SubMenu
+                  title="Groups"
+                  defaultOpen={true}
+                  icon={<RiNodeTree />}
+                >
+                  {this.state.userGroups.total > 0
+                    ? this.state.userGroups.groups.map((group) => {
+                        return (
+                          <MenuItem
+                            key={"menuItem" + group.group_id}
+                            icon={<MdGroups />}
+                          >
+                            {group.group_name}
+                            <Link
+                              to={group.group_id}
+                              key={"menu" + group.group_id}
+                            />
+                          </MenuItem>
+                        );
+                      })
+                    : loadingSVG}
+                </SubMenu>
               </Menu>
             </ProSidebar>
           </div>
@@ -77,12 +109,32 @@ class Dashboard extends Component {
             {this.state.nodesInfo.total > 0 ? (
               <Routes>
                 {this.state.nodesInfo.node_details.map((node) => {
-                  console.log(node);
                   return (
                     <Route
                       path={node.id}
                       key={"route" + node.id}
                       element={<NodeExplorer nodeDetails={node} />}
+                    />
+                  );
+                })}
+              </Routes>
+            ) : (
+              loadingSVG
+            )}
+
+            {this.state.userGroups.total > 0 ? (
+              <Routes>
+                {this.state.userGroups.groups.map((group) => {
+                  return (
+                    <Route
+                      path={group.group_id}
+                      key={"route" + group.group_id}
+                      element={
+                        <GroupExplorer
+                          groupDetails={group}
+                          RMaker={this.props.RMaker}
+                        />
+                      }
                     />
                   );
                 })}
